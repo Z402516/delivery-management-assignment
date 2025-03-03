@@ -135,28 +135,28 @@ class Order:
         print("************** Delivery Note **************")
         print("Thank you for using our delivery service! Please print your delivery receipt "
               "and present it upon receiving your items.")
-        print("\n")
+        print("")
         self.get_customer().customer_details()
-        print("\n\n")
+        print("")
         print("Delivery Information :")
         print("Order Number :",self.get_order_id())
         print("Reference Number :",self.get_reference_id())
         print("Delivery Date :",self.get_delivery_date())
         print("Delivery Method :",self.get_delivery_method())
         print("Total Weight :",self.calculate_weight())
-        print("\n\n")
+        print("")
         print("Summary of Item Delivered")
-        print("Item Code\t\tDescription\t\t\tQuantity\tUnit Price\tTotal Price")
+        print("Item Code\t\tDescription\t\tQuantity\tUnit Price\tTotal Price")
         self.__total_price = 0
         for item in self.get_items():
             quantity = item[0]
             item = item[1]
             total_item_price = quantity * item.get_price()
             self.__total_price += total_item_price
-            print("{}\t\t{}\t\t\t{}\t{}\t{}".format(item.get_item_code(),item.get_description(),
+            print("{}\t\t\t{}\t\t{}\t\t{}\t\t\t{}".format(item.get_item_code(),item.get_description(),
                                                     quantity,item.get_price(),total_item_price))
-        print("\n\n")
-        print("Subtotal : AED",self.__total_price)
+
+        print("\nSubtotal : AED",self.__total_price)
         print("Tax (5%): AED",self.__total_price * 0.05)
         print("Total Charges : AED",self.__total_price + (self.__total_price * 0.05))
 
@@ -302,3 +302,49 @@ class Item:
     def set_weight(self, weight):
         self.__weight = weight
 
+
+# Test Objects
+
+# Creating HardwareCompany object
+hardware_company = HardwareCompany("Tech Store", "Downtown, Dubai, UAE", "+971-50-1234567")
+
+# Creating Customers
+customer1 = Customer(101, "Sarah Williams", "+971-55-9876543", "Business Bay, Dubai, UAE", "sarah@example.com")
+customer2 = Customer(102, "Johnson Smith", "+971-52-8765432", "Jumeirah, Dubai, UAE", "johnson@example.com")
+customer3 = Customer(103, "Robin Adams", "+971-56-7654321", "Marina, Dubai, UAE", "robin@example.com")
+
+# Creating Items
+item1 = Item("KBD101", "RGB Keyboard", 250, 1.2)
+item2 = Item("MSE202", "Wireless Mouse", 120, 0.3)
+item3 = Item("CAM303", "HD Webcam", 350, 0.8)
+item4 = Item("CPAD404", "Cooling Pad", 180, 1.0)
+item5 = Item("HSET505", "Gaming Headset", 280, 0.9)
+item6 = Item("MON606", "Monitor 4K  ", 900, 3.5)
+
+# Creating Orders
+order1 = Order(201, "REF001", "2025-03-05", customer1, "Ready to Deliver")
+order2 = Order(202, "REF002", "2025-03-06", customer2, "Ready to Deliver")
+order3 = Order(203, "REF003", "2025-03-07", customer3, "Ready to Deliver")
+
+# Adding items to orders (Quantity, Item)
+order1.set_items([(1, item1), (1, item2), (1, item5)])
+order2.set_items([(2, item3), (1, item4)])
+order3.set_items([(1, item6), (1, item2), (1, item1)])
+
+# Creating Delivery Riders
+rider1 = DeliveryRider(301, "Ahmed Hassan", "+971-50-6543210", "Bike", [order1])
+rider2 = DeliveryRider(302, "Omar Khalid", "+971-55-1239876", "Van", [order2, order3])
+
+# Assigning orders to riders
+hardware_company.assign_order(201, rider1)
+hardware_company.assign_order(202, rider2)
+hardware_company.assign_order(203, rider2)
+
+print("Delivery Note for Order 1")
+order1.deliveryNote()
+print("\n")
+print("Delivery Note for Order 2")
+order2.deliveryNote()
+print("\n")
+print("Delivery Note for Order 3")
+order3.deliveryNote()
