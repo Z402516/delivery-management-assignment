@@ -1,36 +1,4 @@
 
-
-'''
-
-HardwareCompany
-Order
-DeliveryRider
-Customer
-Item
-
-Scenario: Placing an Order
-Main Use Case: Place Order (Customer)
-
-Includes: Generate Invoice (every order requires an invoice)
-Includes: Update Inventory (items must be deducted from stock)
-
-
-2️⃣ Scenario: Delivering an Order
-Main Use Case: Deliver Order (DeliveryRider)
-
-Includes: Assign Delivery Rider (every order must be assigned to a rider)
-Includes: Generate Delivery Note (to verify order details)
-
-3️⃣ Scenario: Managing Inventory
-Main Use Case: Update Inventory (HardwareCompany)
-
-Includes: Check Stock Level (stock must be updated after each order)
-Includes: Record New Stock (new inventory is added)
-Extends: Reorder Items (only if stock is below a threshold)
-
-'''
-
-
 class HardwareCompany:
     def __init__(self, name, address, contact):
         self.__name = name
@@ -65,11 +33,14 @@ class HardwareCompany:
 
 
 class Order:
-    def __init__(self, order_id, customer, items, total_price, status):
+    def __init__(self, order_id, reference_id, delivery_date, customer, status):
         self.__order_id = order_id
+        self.__reference_id = reference_id
+        self.__delivery_date = delivery_date
+        self.__delivery_method = "Courier"
         self.__customer = customer
-        self.__items = items
-        self.__total_price = total_price
+        self.__items = []
+        self.__total_price = 0
         self.__status = status
 
     def get_order_id(self):
@@ -77,6 +48,24 @@ class Order:
 
     def set_order_id(self, order_id):
         self.__order_id = order_id
+
+    def get_reference_id(self):
+        return self.__reference_id
+
+    def set_reference_id(self, reference_id):
+        self.__reference_id = reference_id
+        
+    def get_delivery_date(self):
+        return self.__delivery_date
+
+    def set_delivery_date(self, delivery_date):
+        self.__delivery_date = delivery_date
+        
+    def get_delivery_method(self):
+        return self.__delivery_method
+
+    def set_delivery_method(self, delivery_method):
+        self.__delivery_method = delivery_method
 
     def get_customer(self):
         return self.__customer
@@ -102,7 +91,42 @@ class Order:
     def set_status(self, status):
         self.__status = status
 
+    def calculate_weight(self):
+        weight = 0
+        for item in self.get_items():
+            quantity = item[0]
+            item = item[1]
+            weight += (quantity * item.get_weight())
+        return weight
 
+    def deliveryNote(self):
+        print("************** Delivery Note **************")
+        print("Thank you for using our delivery service! Please print your delivery receipt "
+              "and present it upon receiving your items.")
+        print("\n")
+        self.get_customer().customer_details()
+        print("\n\n")
+        print("Delivery Information :")
+        print("Order Number :",self.get_order_id())
+        print("Reference Number :",self.get_reference_id())
+        print("Delivery Date :",self.get_delivery_date())
+        print("Delivery Method :",self.get_delivery_method())
+        print("Total Weight :",self.calculate_weight())
+        print("\n\n")
+        print("Summary of Item Delivered")
+        print("Item Code\t\tDescription\t\t\tQuantity\tUnit Price\tTotal Price")
+        self.__total_price = 0
+        for item in self.get_items():
+            quantity = item[0]
+            item = item[1]
+            total_item_price = quantity * item.get_price()
+            self.__total_price += total_item_price
+            print("{}\t\t{}\t\t\t{}\t{}\t{}".format(item.get_item_code(),item.get_description(),
+                                                    quantity,item.get_price(),total_item_price))
+        print("\n\n")
+        print("Subtotal : AED",self.__total_price)
+        print("Tax (5%): AED",self.__total_price * 0.05)
+        print("Total Charges : AED",self.__total_price + (self.__total_price * 0.05))
 
 
 class DeliveryRider:
@@ -182,6 +206,12 @@ class Customer:
     def set_email(self, email):
         self.__email = email
 
+    def customer_details(self):
+        print("Recipient Details:")
+        print("Name :",self.get_name())
+        print("Contact :",self.get_phone())
+        print("Delivery Address :",self.get_address())
+
 
 class Item:
     def __init__(self, item_code, description, price, weight):
@@ -213,12 +243,3 @@ class Item:
 
     def set_weight(self, weight):
         self.__weight = weight
-
-
-
-
-
-
-
-
-
