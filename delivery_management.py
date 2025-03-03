@@ -1,4 +1,3 @@
-
 class HardwareCompany:
     def __init__(self, name, address, contact):
         self.__name = name
@@ -30,6 +29,31 @@ class HardwareCompany:
 
     def get_orders(self):
         return self.__orders
+
+    def update_inventory(self,items):
+        '''
+        This method deducts items from inventory.
+        :param items:
+        :return:
+        '''
+        pass
+
+    def reorder_items(self,items):
+        '''
+        This method will allow the company to reorder items in case the items are not enough in the inventory
+        :param items:
+        :return:
+        '''
+        pass
+
+    def assign_order(self,order_id,rider):
+        '''
+        This method takes the order id and the rider and then assign that order to the delivery rider
+        for the delivery. We also update the inventory after placing this order.
+        :param rider:
+        :return:
+        '''
+        pass
 
 
 class Order:
@@ -90,6 +114,14 @@ class Order:
 
     def set_status(self, status):
         self.__status = status
+
+    def generate_invoice(self,customer):
+        '''
+        This method generates invoice for the customer with their ordered items details.
+        :param customer:
+        :return:
+        '''
+        pass
 
     def calculate_weight(self):
         weight = 0
@@ -167,6 +199,23 @@ class DeliveryRider:
     def set_assigned_orders(self, assigned_orders):
         self.__assigned_orders = assigned_orders
 
+    def deliver_order(self,order_id):
+        '''
+        This method takes the order id and rider delivers that order. Rider also prints the delivery note for this
+        order and presents it upon delivery of the order to the customer. Rider also collects the cash if
+        the order is cash on delivery.
+        :return:
+        '''
+        pass
+
+    def collect_cash(self,order_id):
+        '''
+        This method allows the rider to collect the cash for the order if the order is cash on delivery.
+        :param order_id:
+        :return:
+        '''
+        pass
+
 
 class Customer:
     def __init__(self, customer_id, name, phone, address, email):
@@ -212,6 +261,15 @@ class Customer:
         print("Contact :",self.get_phone())
         print("Delivery Address :",self.get_address())
 
+    def place_order(self,order):
+        '''
+        This method places an order for the customer, generates invoice for their order and finally deducts the
+        ordered items from the inventory.
+        :param order:
+        :return:
+        '''
+        pass
+
 
 class Item:
     def __init__(self, item_code, description, price, weight):
@@ -243,3 +301,4 @@ class Item:
 
     def set_weight(self, weight):
         self.__weight = weight
+
