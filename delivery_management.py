@@ -1,3 +1,5 @@
+
+
 class HardwareCompany:
     def __init__(self, name, address, contact):
         self.__name = name
@@ -124,6 +126,11 @@ class Order:
         pass
 
     def calculate_weight(self):
+        '''
+        This method loops over all the items and calculates the total weight of
+        the items which are included in this order.
+        :return: 
+        '''
         weight = 0
         for item in self.get_items():
             quantity = item[0]
@@ -132,6 +139,11 @@ class Order:
         return weight
 
     def deliveryNote(self):
+        '''
+        This method displays all the information of the delivery items along with the 
+        customer information in a delivery note.
+        :return: 
+        '''
         print("************** Delivery Note **************")
         print("Thank you for using our delivery service! Please print your delivery receipt "
               "and present it upon receiving your items.")
@@ -256,6 +268,10 @@ class Customer:
         self.__email = email
 
     def customer_details(self):
+        '''
+        This method is for displaying all the information of a customer.
+        :return: 
+        '''
         print("Recipient Details:")
         print("Name :",self.get_name())
         print("Contact :",self.get_phone())
@@ -348,3 +364,6 @@ order2.deliveryNote()
 print("\n")
 print("Delivery Note for Order 3")
 order3.deliveryNote()
+
+
+
